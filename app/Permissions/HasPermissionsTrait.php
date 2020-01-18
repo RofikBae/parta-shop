@@ -4,6 +4,7 @@ namespace App\Permissions;
 
 use App\Model\Permission;
 use App\Model\Role;
+use Illuminate\Support\Arr;
 
 trait HasPermissionsTrait
 {
@@ -47,5 +48,38 @@ trait HasPermissionsTrait
             }
         }
         return false;
+    }
+
+    public function givePermission($permission)
+    {
+        $permissions = $this->getAllPermission($permission);
+
+        if ($permissions === null) {
+            return $this;
+        }
+
+        return $this->permissions()->saveMany($permissions);
+    }
+
+    public function revokePermission($permission)
+    {
+        $permissions = $this->getAllPermission($permission);
+
+        if ($permissions === null) {
+            return $this;
+        }
+
+        return $this->permissions()->detach($permissions);
+    }
+
+    public function updatePermission($permission)
+    {
+        $this->revokePermission($permission);
+        return $this->givePermission($permission);
+    }
+
+    protected function getAllPermission($permission)
+    {
+        return Permission::whereIn('name', $permission)->get();
     }
 }

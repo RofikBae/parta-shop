@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 Route::get('/', function (Request $request) {
     $user = $request->user();
 
-    dd($user->givePermissionTo('add product', 'delete product'));
+    dd($user->updatePermission(['add product', 'edit product', 'delete product']));
 });
 
 Auth::routes();
