@@ -82,4 +82,41 @@ trait HasPermissionsTrait
     {
         return Permission::whereIn('name', $permission)->get();
     }
+
+    public function assignRole($role)
+    {
+        $roles = $this->getAllRole($role);
+
+        if ($roles === null) {
+            return $this;
+        }
+        $this->roles()->saveMany($roles);
+
+        return $this;
+    }
+
+    public function removeRole($role)
+    {
+        $roles = $this->getAllRole($role);
+
+        if ($roles === null) {
+            return $this;
+        }
+        $this->roles()->detach($roles);
+
+        return $this;
+    }
+
+    public function syncRole($role)
+    {
+        $this->removeRole($role);
+        $this->assignRole($role);
+
+        return $this;
+    }
+
+    protected function getAllRole($role)
+    {
+        return Role::whereIn('name', $role)->get();
+    }
 }
