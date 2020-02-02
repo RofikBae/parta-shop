@@ -1,5 +1,8 @@
 <?php
 
-Route::get('/product', function () {
-    return 'test';
+Route::get('/', function () {
+    return view('admin.index');
 });
+
+Route::resource('/category', 'CategoryController');
+Route::resource('/product', 'ProductController');

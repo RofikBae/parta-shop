@@ -1,16 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
-
-Route::get('/', function (Request $request) {
-    $user = $request->user();
-
-    dd($user->syncRole(['admin', 'user']));
+Route::get('/', function () {
+    return view('welcome');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/admin', function () {
-    return 'admin';
-})->middleware('role:admin');
+Route::get('/admin/login', function () {
+    return view('admin.login');
+});

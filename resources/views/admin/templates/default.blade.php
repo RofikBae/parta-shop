@@ -9,7 +9,9 @@
     @include('admin.templates.partials._aside')
 
   <div class="content-wrapper">
-    @yield('content')
+    <section class="content">
+      @yield('content')
+    </section>
   </div>
 
   @include('admin.templates.partials._footer')
