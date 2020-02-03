@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Category;
 use App\Model\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -17,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::orderBy('name', 'ASC')->paginate(10);
+        $products = Product::orderBy('name', 'ASC')->paginate(config('app.paginate'));
         $products->load('categories');
 
         return view('admin.product.index', compact('products'));
@@ -47,14 +48,18 @@ class ProductController extends Controller
             'name'        => 'required|min:3',
             'description' => 'required|string',
             'price'       => 'required',
-            'category'    => 'required|array'
+            'category'    => 'required|array',
+            'image'       => 'mimes:png,jpg,jpeg'
         ]);
+
+        $image = $request->file('image') ? $request->file('image')->store('product') : null;
 
         $product = Product::create([
             'name'        => $request->name,
             'description' => $request->description,
             'price'       => $request->price,
-            'slug'        => Str::slug($request->name)
+            'slug'        => Str::slug($request->name),
+            'image'       => $image
         ]);
 
         $categories = Category::find($request->category);
@@ -100,14 +105,25 @@ class ProductController extends Controller
             'name'        => 'required|min:3',
             'description' => 'required|string',
             'price'       => 'required',
-            'category'    => 'required|array'
+            'category'    => 'required|array',
+            'image'       => 'mimes:png,jpg,jpeg'
         ]);
+
+        $image = $product->image ?? null;
+
+        if ($request->hasFile('image')) {
+            if ($product->image) {
+                Storage::delete($product->image);
+            }
+            $image = $request->file('image')->store('product');
+        }
 
         $product->update([
             'name'        => $request->name,
             'description' => $request->description,
             'price'       => $request->price,
-            'slug'        => Str::slug($request->name)
+            'slug'        => Str::slug($request->name),
+            'image'       => $image
         ]);
 
         $product->categories()->sync($request->category);
@@ -123,6 +139,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        if ($product->image !== null) {
+            Storage::delete($product->image);
+        }
         $product->delete();
 
         return back();

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'slug', 'description', 'price'];
+    protected $fillable = ['name', 'slug', 'description', 'price', 'image'];
 
     public function getRouteKeyName()
     {
@@ -16,5 +16,10 @@ class Product extends Model
     public function Categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function getImage()
+    {
+        return asset('images/' . $this->image);
     }
 }

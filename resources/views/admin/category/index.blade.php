@@ -15,9 +15,15 @@
       </tr>
     </thead>
     <tbody>
+      @php
+          $no = 1;
+          $page = request()->has('page') ? request('page') : 1;
+          $perPage = config('app.paginate');
+          $no = $perPage * ($page - 1) + 1;
+      @endphp
       @foreach ($categories as $category)
         <tr>
-          <th scope="row">{{ $loop->iteration }}</th>
+          <th scope="row">{{ $no++ }}</th>
           <td>{{$category->name}}</td>
           <td>{{$category->slug}}</td>
           <td>{{$category->description}}</td>

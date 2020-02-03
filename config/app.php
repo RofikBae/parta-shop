@@ -229,4 +229,5 @@ return [
 
     ],
 
+    'paginate' => env('PAGINATION_PER_PAGE', 10),
 ];

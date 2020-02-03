@@ -7,7 +7,7 @@
         <div class="box-title">Edit product</div>
       </div> 
 
-      <form action="{{ route('product.update',$product) }}" method="post">
+      <form action="{{ route('product.update',$product) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method("PUT")
         <div class="box-body">
@@ -67,8 +67,20 @@
               @endif
             </div>
           </div>
+       
+          <div class="form-group row {{ $errors->has('image') ? 'has-error' : ''}}">
+            <label for="image" class="col-sm-2 col-form-label">Image</label>
+            <div class="col-sm-10">
+              <input name="image" type="file" class="form-control form-control-sm" value="{{ old('image') }}" placeholder="">
+              @if ($errors->has('image'))
+                  <p class="help-block">
+                    {{$errors->first('image')}}
+                  </p>
+              @endif
+            </div>
+          </div>
+       
         </div>
-
         <div class="box-footer">
           <a href=" {{route('product.index')}} " class="btn btn-default">Cancel</a>
           <button type="submit" class="btn btn-info pull-right">Save</button>
