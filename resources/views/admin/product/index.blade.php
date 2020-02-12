@@ -22,7 +22,7 @@
           $no = 1;
           $page = request()->has('page') ? $request->page : 1;
           $perPage = config('app.paginate');
-          $no = $perpage * ($page - 1) + 1;
+          $no = $perPage * ($page - 1) + 1;
       @endphp
       @foreach ($products as $product)
         <tr>

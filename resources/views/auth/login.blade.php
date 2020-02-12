@@ -2,7 +2,55 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="column is-4 is-offset-4">
+                    <h3 class="title has-text-black">Login</h3>
+                    <hr class="login-hr">
+                    <div class="box">
+                        <figure class="avatar">
+                            <img src="{{asset('images/logo/mylogo.png')}}">
+                        </figure>
+                        <form action="{{route('login')}}" method="POST">
+                            @csrf
+                            <div class="field">
+                                <div class="control">
+                                    <input name="email" class="input is-small {{$errors->has('email') ? "is-danger" : ""}}" type="email" placeholder="Your Email" autofocus="" required>
+                                    @if ($errors->has('email'))
+                                        <span class="help is-danger">{{ $errors->first('email') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    <input name="password" class="input is-small {{$errors->has('password') ? "is-danger" : ""}}" type="password" placeholder="Your Password" required>
+                                    @if ($errors->has('password'))
+                                        <span class="help is-danger">{{ $errors->first('password') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="field is-pulled-left">
+                                <label class="checkbox">
+                                <input type="checkbox">
+                                Remember me
+                                </label>
+                            </div>
+                            <button type="submit" class="button is-block is-info is-small is-fullwidth">Login <i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                        </form>
+                    </div>
+                    <p class="has-text-grey">
+                        <a href="../">Register</a> &nbsp;·&nbsp;
+                        <a href="../">Forgot Password</a> &nbsp;·&nbsp;
+                        <a href="../">Need Help?</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
@@ -68,6 +116,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 @endsection
