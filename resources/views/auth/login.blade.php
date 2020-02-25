@@ -16,7 +16,7 @@
                             @csrf
                             <div class="field">
                                 <div class="control">
-                                    <input name="email" class="input is-small {{$errors->has('email') ? "is-danger" : ""}}" type="email" placeholder="Your Email" autofocus="" required>
+                                    <input name="email" class="input is-small {{$errors->has('email') ? "is-danger" : ""}}" type="email" value="{{old('email')}}" placeholder="Your Email" autofocus="" required>
                                     @if ($errors->has('email'))
                                         <span class="help is-danger">{{ $errors->first('email') }}</span>
                                     @endif
@@ -37,12 +37,16 @@
                                 Remember me
                                 </label>
                             </div>
-                            <button type="submit" class="button is-block is-info is-small is-fullwidth">Login <i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                            <button type="submit" class="button is-block is-info is-small is-fullwidth">
+                                <i class="fa fa-sign-in" aria-hidden="true">
+                                    Login
+                                </i>
+                            </button>
                         </form>
                     </div>
                     <p class="has-text-grey">
-                        <a href="../">Register</a> &nbsp;·&nbsp;
-                        <a href="../">Forgot Password</a> &nbsp;·&nbsp;
+                        <a href="{{route('register')}}">Register</a> &nbsp;·&nbsp;
+                        <a href="{{ route('password.request') }}">Forgot Password</a> &nbsp;·&nbsp;
                         <a href="../">Need Help?</a>
                     </p>
                 </div>

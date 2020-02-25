@@ -49,7 +49,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <button type="submit" class="button is-block is-info is-small is-fullwidth">Register <i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                            <button type="submit" class="button is-block is-info is-small is-fullwidth"><i class="fa fa-sign-in" aria-hidden="true">Register</i></button>
                         </form>
                     </div>
                     <p class="has-text-grey">
