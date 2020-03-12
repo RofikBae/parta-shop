@@ -20,21 +20,21 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div id="app" class="mb-12">
         <nav class="navbar is-info">
             <div class="navbar-brand">
-              <a class="navbar-item" href="{{route('home')}}">
+                <a class="navbar-item" href="{{route('home')}}">
                 <span><b>PARTAS</b></span>
-              </a>
-              <a class="navbar-burger burger" role="button" aria-label="menu" aria-expanded="false" data-target="navMenu">
+                </a>
+                <a class="navbar-burger burger" role="button" aria-label="menu" aria-expanded="false" data-target="navMenu">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
-              </a>
+                </a>
             </div>
             <div class="navbar-menu" id="navMenu">
                 <div class="navbar-end">
-                  @guest
+                    @guest
                     <div class="navbar-item">
                         <div class="field is-grouped">
                             <p class="control">
@@ -43,13 +43,13 @@
                             </p>
                         </div>
                     </div>
-                  @endguest
-                  @auth
-                      <div class="navbar-item has-dropdown is-hoverable">
-                          <div class="navbar-link">
-                              {{auth()->user()->name}}
-                          </div>
-                          <div class="navbar-dropdown">
+                    @endguest
+                    @auth
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <div class="navbar-link">
+                                {{auth()->user()->name}}
+                            </div>
+                            <div class="navbar-dropdown">
                             <a href="{{route('logout')}}" class="navbar-item"
                                 onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();"
@@ -58,19 +58,17 @@
                             <form action="{{route('logout')}}" id="logout-form" method="post" style="display:none">
                                 @csrf
                             </form>
-                          </div>
-                      </div>
-                  @endauth
+                            </div>
+                        </div>
+                    @endauth
                 </div>
             </div>
-            </div>
         </nav>
-
-        <main class="py-4">
+        <section class="section">
             @yield('content')
-        </main>
+        </section>
     </div>
-
+</body>
     <script src="{{asset('js/app.js')}}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -99,5 +97,4 @@
 
         });    
     </script>
-</body>
 </html>

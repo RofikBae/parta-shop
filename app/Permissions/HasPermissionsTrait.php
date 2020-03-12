@@ -85,7 +85,7 @@ trait HasPermissionsTrait
 
     public function assignRole($role)
     {
-        $roles = $this->getAllRole($role);
+        $roles = $this->getAllRole((array) $role);
 
         if ($roles === null) {
             return $this;
@@ -117,6 +117,6 @@ trait HasPermissionsTrait
 
     protected function getAllRole($role)
     {
-        return Role::whereIn('name', $role)->get();
+        return Role::where('name', $role)->get();
     }
 }
