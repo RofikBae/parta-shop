@@ -23,7 +23,7 @@
     <div id="app" class="mb-12">
         <nav class="navbar is-info">
             <div class="navbar-brand">
-                <a class="navbar-item" href="{{route('home')}}">
+                <a class="navbar-item" href="{{route('homepage')}}">
                 <span><b>PARTAS</b></span>
                 </a>
                 <a class="navbar-burger burger" role="button" aria-label="menu" aria-expanded="false" data-target="navMenu">
@@ -34,6 +34,7 @@
             </div>
             <div class="navbar-menu" id="navMenu">
                 <div class="navbar-end">
+                    @include('frontend.components.cart')
                     @guest
                     <div class="navbar-item">
                         <div class="field is-grouped">

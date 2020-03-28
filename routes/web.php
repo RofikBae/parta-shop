@@ -4,6 +4,7 @@ Route::get('/', 'Frontend\\HomeController@index')->name('homepage');
 Route::get('product/{product}', 'Frontend\\ProductController@show')->name('frontend.product.show');
 Route::get('product/category/{category}', 'Frontend\\ProductController@byCategory')->name('frontend.product.bycategory');
 Route::get('cart/{product}', 'Frontend\\CartController@addItem')->name('frontend.cart.add.item');
+Route::get('cart', 'Frontend\\CartController@index')->name('frontend.cart.index');
 
 Auth::routes();
 
