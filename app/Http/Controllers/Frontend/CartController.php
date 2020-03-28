@@ -9,10 +9,8 @@ class CartController extends Controller
 {
     public function index()
     {
-        $productsCart = session('cart');
-        $count = $productsCart ? count($productsCart) : 0;
-
-        return view('frontend.cart.index', compact(['productsCart', 'count']));
+        $products = session('cart');
+        return view('frontend.cart.index', compact('products'));
     }
 
     public function addItem(Product $product)
@@ -31,11 +29,11 @@ class CartController extends Controller
         if (session()->has('cart')) {
             session()->push('cart', $item);
 
-            return redirect()->route('frontend.cart.index');
+            return redirect()->route('homepage');
         }
 
         session()->put('cart', [$item]);
 
-        return redirect()->route('frontend.cart.index');
+        return redirect()->route('homepage');
     }
 }
