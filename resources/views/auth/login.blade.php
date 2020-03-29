@@ -6,6 +6,7 @@
         <div class="hero-body">
             <div class="container has-text-centered">
                 <div class="column is-4 is-offset-4">
+                    @include('frontend.partials._alert')
                     <h3 class="title has-text-black">Login</h3>
                     <hr class="login-hr">
                     <div class="box">

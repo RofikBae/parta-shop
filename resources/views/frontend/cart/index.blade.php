@@ -37,7 +37,7 @@
                                     </div>
                                     <div class="column is-9">
                                         <p> {{ $product['description'] }} </p>
-                                        <p> {{ $product['formated_price'] }} </p>
+                                        <p> {{ rupiah_format($product['price']) }} </p>
                                     </div>
                                 </div>
                             </div>
@@ -46,16 +46,16 @@
                 @endforeach
             </div>
             <div class="column is-4">
-                <h1 class="title is-2">Detail</h1>
+                <h1 class="title is-2">Total</h1>
                 <div class="card">
                     <div class="card-content">
                         <div class="content">
                             <p> Total Item  : {{$totalItem}} </p>
-                            <p> Total Price : {{$totalPrice}} </p>
+                            <p> Total Price : {{rupiah_format($totalPrice)}} </p>
                         </div>
-                    </div>
-                    <div class="card-action">
-                        <a href="" class="button is-danger is-fullwidth">Checkout</a>
+                        <div class="card-action">
+                            <a href="{{ route('frontend.checkout') }}" class="button is-danger is-fullwidth">Checkout</a>
+                        </div>
                     </div>
                 </div>
             </div>

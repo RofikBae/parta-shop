@@ -98,4 +98,5 @@
 
         });    
     </script>
+    @stack('script')
 </html>
