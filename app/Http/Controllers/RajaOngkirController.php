@@ -29,7 +29,7 @@ class RajaOngkirController extends Controller
         $client = new Client();
         $result = $client->request(
             "GET",
-            "https://api.rajaongkir.com/starter/city?province={$request->province_id}",
+            "https://api.rajaongkir.com/starter/city?province={$request->provinceId}",
             [
                 'headers' => [
                     'key'    => env('RAJAONGKIR_KEY'),
