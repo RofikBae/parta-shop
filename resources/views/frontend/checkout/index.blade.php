@@ -21,8 +21,9 @@
                 <form action="{{ route('register') }}" method="POST">
                     @csrf
                     <div class="field">
+                        <label for="name">Name</label>
                         <div class="control">
-                            <input name="name" class="input is-small {{$errors->has('name') ? "is-danger" : ""}}" type="text" placeholder="Name" value="{{old('name')}}" autofocus="" required>
+                            <input name="name" class="input is-small {{$errors->has('name') ? "is-danger" : ""}}" type="text" placeholder="Name" value="{{ $me->name }}" autofocus="" required>
                             @if ($errors->has('name'))
                                 <span class="help is-danger">{{ $errors->first('name') }}</span>
                             @endif
@@ -30,8 +31,9 @@
                     </div>
 
                     <div class="field">
+                        <label for="email">Email</label>
                         <div class="control">
-                            <input name="email" class="input is-small {{$errors->has('email') ? "is-danger" : ""}}" type="email" placeholder="Email" value="{{old('email')}}" autofocus="" required>
+                            <input name="email" class="input is-small {{$errors->has('email') ? "is-danger" : ""}}" type="email" placeholder="Email" value="{{ $me->email }}" autofocus="" required>
                             @if ($errors->has('email'))
                                 <span class="help is-danger">{{ $errors->first('email') }}</span>
                             @endif
@@ -39,6 +41,7 @@
                     </div>
 
                     <div class="field">
+                        <label for="province">Province</label>
                         <div class="select is-fullwidth">
                             <select name="province" id="province" class="input is-small {{$errors->has('province') ? "is-danger" : ""}}" placeholder="Province" required>
                                 <option value="">Select Province</option>
@@ -50,9 +53,10 @@
                     </div>
 
                     <div class="field">
+                        <label for="city">City</label>
                         <div class="select is-fullwidth">
                             <select name="city" id="city" class="input is-small {{$errors->has('city') ? "is-danger" : ""}}" placeholder="City" required>
-                                <option value="1">Select City</option>
+                                <option value="">Select City</option>
                             </select>
                             @if ($errors->has('city'))
                                 <span class="help is-danger">{{ $errors->first('city') }}</span>
@@ -61,6 +65,7 @@
                     </div>
 
                     <div class="field">
+                        <label for="address">Address</label>
                         <div class="control">
                             <textarea name="address" class="input is-small {{$errors->has('address') ? "is-danger" : ""}}" placeholder="Address" value="{{old('address')}}" autofocus="" required></textarea>
                             @if ($errors->has('address'))
@@ -70,18 +75,34 @@
                     </div>
 
                     <div class="field">
+                        <label for="phone">Phone</label>
                         <div class="control">
-                            <input name="phone" class="input is-small {{$errors->has('phone') ? "is-danger" : ""}}" type="number" placeholder="Phone" value="{{old('phone')}}" autofocus="" required>
+                            <input name="phone" class="input is-small {{$errors->has('phone') ? "is-danger" : ""}}" type="number" placeholder="Phone" value="{{ $me->phone }}" autofocus="" required>
                             @if ($errors->has('phone'))
                                 <span class="help is-danger">{{ $errors->first('phone') }}</span>
                             @endif
                         </div>
                     </div>
 
+                    <div class="field">
+                        <label for="courier">Courier</label>
+                        <div class="select is-fullwidth">
+                            <select name="courier" id="courier" class="input is-small {{$errors->has('courier') ? "is-danger" : ""}}" placeholder="courier" required>
+                                <option value="">Select courier</option>
+                            </select>
+                            @if ($errors->has('courier'))
+                                <span class="help is-danger">{{ $errors->first('courier') }}</span> 
+                            @endif
+                        </div>
+                    </div>
+
                     <button type="submit" class="button is-block is-info is-small"><i class="fa fa-sign-in" aria-hidden="true">Save</i></button>
                 </form>
-                
-                <h1 class="title is-6">Shoping Cart</h1>
+                                
+            </div>
+
+            <div class="column is-4">
+                <h1 class="title is-6">Order Detail</h1>
                 @php
                 $totalItem = 0;
                 $totalPrice = 0;
@@ -110,10 +131,6 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
-
-            <div class="column is-4">
-                <h1 class="title is-6">Total</h1>
                 <div class="card">
                     <div class="card-content">
                         <div class="content">
@@ -138,45 +155,60 @@
                 let provinces = data
                 provinces.forEach(function(province) {
                     let option = new Option(province.province,province.province_id)
-                    $(option).html(province.province)
                     $('#province').append(option)
                 });
-            }
+            },
+            error: function(){return}
         })
 
         $('#province').change(function(){
             let provinceId = $('#province').val()
             
-            if (provinceId == null || provinceId == "") {
-                $('#city').empty()
-                let option = new Option("Select City")
-                $(option).html("Select City")
-                $('#city').append(option)
-                return
-            }
-            
-            $('#city').empty()
-
+            $('#city').empty().html(new Option("Select City"))
+            $('#courier').empty().html(new Option("Select Courier"))
+        
+            if (provinceId == null || provinceId == "") return
+                        
             $.ajax({
                 type:"GET",
                 url:"{{route('rajaongkir.city','provinceId')}}",
-                data: "province_id="+provinceId,
+                data: "provinceId="+provinceId,
                 success: function (data) {
                     let cities = data
-                    console.log(cities)
                     cities.forEach(function(city) {
-                        let option = new Option(city.city_name,city.city_id)
-                        $(option).html(city.type+" "+city.city_name)
+                        let option = new Option(city.type+" "+city.city_name,city.city_id)
                         $('#city').append(option)
                     });
                 },
-                error: function () {
-                    $('#city').empty()
-                    let option = new Option("Select City")
-                    $(option).html("Select City")
-                    $('#city').append(option)
-                    return
-                } 
+                error: function(){return}
+            })
+        })
+
+        $('#city').change(function(){
+
+            let cityId = $('#city').val()
+
+            $('#courier').empty().html(new Option("Select Courier"))
+
+            if (cityId == null || cityId == "") return
+            
+            $.ajax({
+                type: "POST",
+                url : "{{route('rajaongkir.cost')}}",
+                data: {
+                    destination: cityId},
+                    weight: weight,
+                },
+                success: function(data){
+                    console.log(data);
+                    let couriers = data
+                    
+                    couriers.forEach(function(courier) {
+                        let option = new Option(courier.code+' - '+courier.service+' ('+courier.cost+')',courier.code+' - '+courier.service)
+                        $('#courier').append(option)
+                    });
+                },
+                error: function() {return}
             })
         })
     </script>

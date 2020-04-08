@@ -231,4 +231,5 @@ return [
 
     'paginate' => env('PAGINATION_PER_PAGE', 10),
     'front_paginate' => env('FRONT_PAGINATION_PER_PAGE', 10),
+    'couriers' => ['jne', 'tiki', 'pos'],
 ];

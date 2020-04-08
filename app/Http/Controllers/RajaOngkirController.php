@@ -41,26 +41,45 @@ class RajaOngkirController extends Controller
         return json_decode($result->getBody(), true)['rajaongkir']['results'];
     }
 
-    public function getCost($destination, $weight, $courier)
+    public function getCost(Request $request)
     {
+        $couriers = config('app.couriers');
         $client = new Client();
-        $result = $client->request(
-            "POST",
-            "https://api.rajaongkir.com/starter/cost",
-            [
-                'headers' => [
-                    'key'    => env('RAJAONGKIR_KEY'),
-                    'accept' => 'application/json',
-                ],
-                'form_params' => [
-                    'origin'      => env('SHOP_CITY_ID'),
-                    'destination' => $destination,
-                    'weight'      => $weight,
-                    'courier'     => $courier
-                ],
-            ]
-        );
 
-        return json_decode($result->getBody(), true)['rajaongkir'];
+        $models = [];
+        foreach ($couriers as $value) {
+
+            $model = $client->request(
+                "POST",
+                "https://api.rajaongkir.com/starter/cost",
+                [
+                    'headers' => [
+                        'key'    => env('RAJAONGKIR_KEY'),
+                        'accept' => 'application/json',
+                    ],
+                    'form_params' => [
+                        'origin'      => env('SHOP_CITY_ID'),
+                        'destination' => $request->destination,
+                        'weight'      => 1000, //$request->weight,
+                        'courier'     => $value,
+                    ],
+                ]
+            );
+            array_push($models, json_decode($model->getBody(), true)['rajaongkir']['results'][0]);
+        }
+
+        $results = [];
+        foreach ($models as $model) {
+            foreach ($model['costs'] as $cost) {
+                $results[] = [
+                    'code'    => strtoupper($model['code']),
+                    'service' => $cost['service'],
+                    'cost'    => rupiah_format($cost['cost'][0]['value']),
+                    'etd'     => $cost['cost'][0]['etd'],
+                ];
+            }
+        }
+
+        return $results;
     }
 }

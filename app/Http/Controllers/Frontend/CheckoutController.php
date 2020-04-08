@@ -10,11 +10,12 @@ class CheckoutController extends Controller
     public function index()
     {
         $products = session('cart');
+        $me = auth()->user();
 
-        if (!auth()->user()) {
+        if (!$me) {
             return redirect()->route('login')->with('info', 'Login For Checkout!');
         }
 
-        return view('frontend.checkout.index', compact('products'));
+        return view('frontend.checkout.index', compact('products', 'me'));
     }
 }
