@@ -74,7 +74,7 @@ class RajaOngkirController extends Controller
                 $results[] = [
                     'code'    => strtoupper($model['code']),
                     'service' => $cost['service'],
-                    'cost'    => rupiah_format($cost['cost'][0]['value']),
+                    'cost'    => $cost['cost'][0]['value'],
                     'etd'     => $cost['cost'][0]['etd'],
                 ];
             }

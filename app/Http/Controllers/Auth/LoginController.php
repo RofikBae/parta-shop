@@ -52,5 +52,9 @@ class LoginController extends Controller
         if ($user->hasRole('admin')) {
             return redirect('/admin');
         }
+
+        if (session()->has('cart')) {
+            return redirect()->route('frontend.checkout');
+        }
     }
 }

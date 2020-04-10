@@ -134,8 +134,11 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="content">
-                            <p> Total Item  : {{$totalItem}} </p>
-                            <p> Total Price : {{rupiah_format($totalPrice)}} </p>
+                            <p> Total Item : <span class="is-pulled-right"> {{$totalItem}} </span></p>
+                            <p> ETD : <span class="is-pulled-right" id="etd"> - </span></p>
+                            <p> Shipping Cost  : <span class="is-pulled-right" id="ship-cost"> - </span></p>
+                            <p> Total Price : <span class="is-pulled-right" id="total-price"> {{rupiah_format($totalPrice)}} </span></p>
+                            <p> Grand Total : <span class="is-pulled-right" id="grand-total"> {{rupiah_format($totalPrice)}} </span></p>
                         </div>
                         <div class="card-action">
                             <a href="" class="button is-danger is-fullwidth">Go To Payment</a>
@@ -148,6 +151,20 @@
 </div>
 @push('script')
     <script>
+
+        function convertToRupiah(angka)
+        {
+            var rupiah = '';		
+            var angkarev = angka.toString().split('').reverse().join('');
+            for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+            return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+        }
+        
+        function convertToAngka(rupiah)
+        {
+            return parseInt(rupiah.replace(/,.*|[^0-9]/g, ''), 10);
+        }
+
         $.ajax({
             type:"GET",
             url:"{{route('rajaongkir.province')}}",
@@ -196,20 +213,32 @@
                 type: "POST",
                 url : "{{route('rajaongkir.cost')}}",
                 data: {
-                    destination: cityId},
-                    weight: weight,
+                    destination: cityId,
+                    weight: 2000,
                 },
                 success: function(data){
-                    console.log(data);
                     let couriers = data
                     
-                    couriers.forEach(function(courier) {
-                        let option = new Option(courier.code+' - '+courier.service+' ('+courier.cost+')',courier.code+' - '+courier.service)
+                    couriers.forEach(function(courier) {                        
+                        let option = new Option(courier.code+' - '+courier.service+' ('+courier.cost+')',courier.code+' '+courier.service+' '+courier.cost+' '+courier.etd)
                         $('#courier').append(option)
                     });
                 },
                 error: function() {return}
             })
+        })
+
+        $('#courier').change(function(){
+            let data = $('#courier').val()
+            let courier = data.split(' ')
+
+            let totalPrice = convertToAngka($('#total-price').text())
+            let shipCost = convertToAngka(courier[2])
+            let grandTotal = totalPrice + shipCost
+
+            $('#ship-cost').text(convertToRupiah(shipCost))
+            $('#etd').text(courier[3]+' Days')
+            $('#grand-total').text(convertToRupiah(grandTotal))
         })
     </script>
 @endpush
